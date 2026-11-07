@@ -88,6 +88,351 @@ def load_face_model():
 with st.spinner("Loading face model, first run takes ~1 minute..."):
     load_face_model()
 # ===========================================================================
+# Design System — CampusAttend CSS (shadcn/ui-inspired clinical blueprint)
+# Primary #2563EB · Canvas #F5F5F5 · Card #FFFFFF · Font: Geist/Inter
+# ===========================================================================
+def _inject_css():
+    """Inject the CampusAttend design system CSS. Called once at startup."""
+    st.markdown("""
+<style>
+/* ── Font ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"], .stApp, [data-testid="stAppViewContainer"] {
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system,
+                 BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ── Page Background ──────────────────────────────────────────────── */
+.stApp, [data-testid="stAppViewContainer"] > .main {
+    background-color: #F5F5F5 !important;
+}
+.main .block-container {
+    padding: 2rem 2.5rem 2rem 2.5rem !important;
+    max-width: 1200px !important;
+}
+
+/* ── Hide Streamlit chrome ────────────────────────────────────────── */
+#MainMenu, footer, [data-testid="stDecoration"],
+[data-testid="stStatusWidget"] { visibility: hidden; display: none; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────── */
+[data-testid="stSidebar"] {
+    background-color: #FFFFFF !important;
+    border-right: 1px solid #E5E5E5 !important;
+}
+[data-testid="stSidebar"] > div:first-child {
+    padding: 1.5rem 1rem 1rem 1rem !important;
+}
+/* Sidebar nav buttons: transparent, left-aligned, pill */
+[data-testid="stSidebar"] [data-testid="stButton"] > button,
+[data-testid="stSidebar"] [data-testid="baseButton-secondary"] {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 8px !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 36px !important;
+    transition: background-color 0.15s ease !important;
+    box-shadow: none !important;
+}
+[data-testid="stSidebar"] [data-testid="stButton"] > button:hover,
+[data-testid="stSidebar"] [data-testid="baseButton-secondary"]:hover {
+    background-color: #F5F5F5 !important;
+    color: #0A0A0A !important;
+}
+
+/* ── Buttons — Primary ────────────────────────────────────────────── */
+[data-testid="baseButton-primary"],
+[data-testid="stButton"] > button[kind="primary"],
+.stButton > button[kind="primary"] {
+    background-color: #2563EB !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0 1.25rem !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    box-shadow: 0 1px 2px rgba(37,99,235,0.25) !important;
+    transition: background-color 0.15s ease !important;
+}
+[data-testid="baseButton-primary"]:hover,
+[data-testid="stButton"] > button[kind="primary"]:hover {
+    background-color: #1D4ED8 !important;
+}
+
+/* ── Buttons — Secondary (main content only) ─────────────────────── */
+.main [data-testid="baseButton-secondary"],
+.main [data-testid="stButton"] > button:not([kind="primary"]) {
+    background-color: #FFFFFF !important;
+    color: #374151 !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 10px !important;
+    padding: 0 1.25rem !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+    transition: all 0.15s ease !important;
+}
+.main [data-testid="baseButton-secondary"]:hover,
+.main [data-testid="stButton"] > button:not([kind="primary"]):hover {
+    background-color: #F9FAFB !important;
+    border-color: #D1D5DB !important;
+}
+
+/* ── Text Input ───────────────────────────────────────────────────── */
+[data-testid="stTextInput"] input {
+    background-color: #F9FAFB !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 10px !important;
+    padding: 0.5rem 0.875rem !important;
+    font-size: 14px !important;
+    color: #111827 !important;
+    transition: border-color 0.15s, box-shadow 0.15s !important;
+}
+[data-testid="stTextInput"] input:focus {
+    border-color: #2563EB !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12) !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+}
+[data-testid="stTextInput"] input::placeholder { color: #9CA3AF !important; }
+
+/* ── Selectbox ────────────────────────────────────────────────────── */
+[data-testid="stSelectbox"] > div > div,
+[data-baseweb="select"] > div:first-child {
+    background-color: #F9FAFB !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+}
+
+/* ── Date Input ───────────────────────────────────────────────────── */
+[data-testid="stDateInput"] input {
+    background-color: #F9FAFB !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+}
+
+/* ── Slider ───────────────────────────────────────────────────────── */
+[data-testid="stSlider"] [data-baseweb="slider"] div[role="slider"] {
+    background-color: #2563EB !important;
+    border-color: #2563EB !important;
+}
+[data-testid="stSlider"] [data-baseweb="slider"] > div > div:first-child > div {
+    background: linear-gradient(90deg, #2563EB 0%, #2563EB 100%) !important;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────────────── */
+.stProgress > div > div > div > div {
+    background: linear-gradient(90deg, #2563EB, #3B82F6) !important;
+    border-radius: 999px !important;
+}
+.stProgress > div > div {
+    border-radius: 999px !important;
+    height: 6px !important;
+    background-color: #E5E7EB !important;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────────── */
+.stTabs [data-baseweb="tab-list"] {
+    background-color: #F3F4F6 !important;
+    border-radius: 10px !important;
+    padding: 4px !important;
+    gap: 2px !important;
+    border-bottom: none !important;
+}
+.stTabs [data-baseweb="tab"] {
+    border-radius: 8px !important;
+    color: #6B7280 !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    padding: 0.4rem 0.875rem !important;
+    border: none !important;
+    background: transparent !important;
+}
+.stTabs [aria-selected="true"] {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04) !important;
+}
+[data-testid="stTabContent"] { padding-top: 1rem !important; }
+
+/* ── Expander ─────────────────────────────────────────────────────── */
+[data-testid="stExpander"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+[data-testid="stExpander"] summary {
+    padding: 0.875rem 1rem !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    color: #374151 !important;
+}
+[data-testid="stExpander"] summary:hover { color: #111827 !important; }
+[data-testid="stExpander"] summary + div { padding: 1rem !important; }
+
+/* ── Bordered Container (st.container(border=True)) ──────────────── */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.02) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"] > div {
+    padding: 1.25rem 1.5rem !important;
+}
+
+/* ── Metric ───────────────────────────────────────────────────────── */
+[data-testid="stMetric"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 12px !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+[data-testid="stMetric"] label,
+[data-testid="stMetricLabel"] {
+    color: #6B7280 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+}
+[data-testid="stMetricValue"] > div {
+    color: #0A0A0A !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* ── Alerts ───────────────────────────────────────────────────────── */
+[data-testid="stInfo"] {
+    background-color: #EFF6FF !important;
+    border: none !important;
+    border-left: 4px solid #2563EB !important;
+    border-radius: 8px !important;
+    color: #1E40AF !important;
+}
+[data-testid="stSuccess"] {
+    background-color: #F0FDF4 !important;
+    border: none !important;
+    border-left: 4px solid #16A34A !important;
+    border-radius: 8px !important;
+    color: #15803D !important;
+}
+[data-testid="stWarning"] {
+    background-color: #FFFBEB !important;
+    border: none !important;
+    border-left: 4px solid #D97706 !important;
+    border-radius: 8px !important;
+    color: #92400E !important;
+}
+[data-testid="stError"] {
+    background-color: #FEF2F2 !important;
+    border: none !important;
+    border-left: 4px solid #DC2626 !important;
+    border-radius: 8px !important;
+    color: #991B1B !important;
+}
+
+/* ── DataFrame ────────────────────────────────────────────────────── */
+[data-testid="stDataFrame"] {
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+
+/* ── Form ─────────────────────────────────────────────────────────── */
+[data-testid="stForm"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+/* ── Camera Input ─────────────────────────────────────────────────── */
+[data-testid="stCameraInput"] > div > div {
+    border: 2px dashed #E5E5E5 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    transition: border-color 0.15s !important;
+}
+[data-testid="stCameraInput"] > div > div:hover {
+    border-color: #2563EB !important;
+}
+
+/* ── Typography ───────────────────────────────────────────────────── */
+h1 { color:#0A0A0A!important; font-weight:600!important; font-size:28px!important;
+     letter-spacing:-0.025em!important; line-height:1.2!important; }
+h2 { color:#111827!important; font-weight:600!important; font-size:20px!important;
+     letter-spacing:-0.015em!important; }
+h3 { color:#374151!important; font-weight:500!important; font-size:16px!important; }
+p, [data-testid="stMarkdown"] p { color:#374151!important; font-size:14px!important; line-height:1.5!important; }
+.stCaption > div, [data-testid="stCaptionContainer"] {
+    color:#6B7280!important; font-size:12px!important; }
+hr { border:none!important; border-top:1px solid #E5E5E5!important; margin:1.25rem 0!important; }
+strong { color: inherit !important; }
+
+/* ── Checkbox ─────────────────────────────────────────────────────── */
+[data-testid="stCheckbox"] > label { font-size:14px!important; color:#374151!important; }
+
+/* ── Download Button ─────────────────────────────────────────────── */
+[data-testid="stDownloadButton"] > button {
+    background-color: #FFFFFF !important;
+    color: #374151 !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    height: 40px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+[data-testid="stDownloadButton"] > button:hover {
+    background-color: #F9FAFB !important;
+    border-color: #D1D5DB !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+def _page_header(title: str, subtitle: str = "") -> None:
+    """Render a consistent page header for all pages."""
+    sub = (
+        f'<p style="font-size:14px;color:#6B7280;margin:6px 0 0 0;font-weight:400;">'
+        f'{subtitle}</p>'
+        if subtitle else ""
+    )
+    st.markdown(
+        f'<div style="margin-bottom:1.75rem;padding-bottom:1rem;'
+        f'border-bottom:1px solid #F3F4F6;">'
+        f'<h2 style="font-size:24px;font-weight:600;color:#0A0A0A;'
+        f'letter-spacing:-0.025em;margin:0;line-height:1.2;">{title}</h2>'
+        f'{sub}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+_inject_css()
+# ===========================================================================
 # Helper: Embedding utilities
 # ===========================================================================
 def l2_normalize(embedding: np.ndarray) -> np.ndarray:
@@ -141,75 +486,137 @@ if "username" not in st.session_state:
     st.session_state["username"] = ""
 if "role" not in st.session_state:
     st.session_state["role"] = ""
+if "page" not in st.session_state:
+    st.session_state["page"] = ""
 # ===========================================================================
 # LOGIN PAGE
 # ===========================================================================
 def show_login():
-    st.title("🎓 Face Recognition Attendance System")
-    st.markdown("Please log in to continue.")
-    col, _ = st.columns([1, 2])
+    # Center the card using 3-column layout
+    _, col, _ = st.columns([1, 1.1, 1])
     with col:
+        # ── Logo / branding ──────────────────────────────────────────
+        st.markdown("""
+        <div style="text-align:center; padding:1.5rem 0 1.75rem 0;">
+            <div style="font-size:48px; line-height:1; margin-bottom:0.75rem;">🎓</div>
+            <div style="font-size:26px; font-weight:600; color:#0A0A0A;
+                        letter-spacing:-0.03em; line-height:1.2;">
+                CampusAttend
+            </div>
+            <div style="font-size:14px; color:#6B7280; margin-top:6px;">
+                Smart Campus Attendance System
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Login form ───────────────────────────────────────────────
         with st.form("login_form"):
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            submitted = st.form_submit_button("Login", use_container_width=True)
+            username = st.text_input("Username", placeholder="e.g. staff1")
+            password = st.text_input("Password", type="password", placeholder="••••••••")
+            submitted = st.form_submit_button(
+                "Sign In", use_container_width=True, type="primary"
+            )
+
         if submitted:
             role = auth.verify_login(username, password)
             if role:
                 st.session_state["logged_in"] = True
                 st.session_state["username"] = username
                 st.session_state["role"] = role
+                # Set default landing page per role
+                st.session_state["page"] = (
+                    "Register Student" if role == "staff" else "Review & Post"
+                )
                 st.rerun()
             else:
                 st.error("Invalid username or password.")
-    st.markdown("---")
-    st.caption("**Prototype credentials:**")
-    st.caption("Staff: `staff1 / staff123`  |  CR: `cr1 / cr123`  |  Faculty: `faculty1 / fac123`")
+
+        # ── Demo credentials ─────────────────────────────────────────
+        st.markdown("""
+        <div style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid #F3F4F6;">
+            <div style="font-size:11px; font-weight:600; color:#9CA3AF;
+                        text-transform:uppercase; letter-spacing:0.06em;
+                        margin-bottom:10px; text-align:center;">
+                Demo Credentials
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="background:#F9FAFB; border:1px solid #E5E5E5; border-radius:8px;
+                            padding:7px 12px; font-size:12px; color:#374151;
+                            font-family:'Courier New',monospace; display:flex;
+                            justify-content:space-between; align-items:center;">
+                    <span style="color:#6B7280; font-size:11px; font-family:Inter,sans-serif;
+                                 font-weight:500;">Staff</span>
+                    <span>staff1 / staff123</span>
+                </div>
+                <div style="background:#F9FAFB; border:1px solid #E5E5E5; border-radius:8px;
+                            padding:7px 12px; font-size:12px; color:#374151;
+                            font-family:'Courier New',monospace; display:flex;
+                            justify-content:space-between; align-items:center;">
+                    <span style="color:#6B7280; font-size:11px; font-family:Inter,sans-serif;
+                                 font-weight:500;">CR</span>
+                    <span>cr1 / cr123</span>
+                </div>
+                <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px;
+                            padding:7px 12px; font-size:12px; color:#1E40AF;
+                            font-family:'Courier New',monospace; display:flex;
+                            justify-content:space-between; align-items:center;">
+                    <span style="color:#2563EB; font-size:11px; font-family:Inter,sans-serif;
+                                 font-weight:500;">Faculty</span>
+                    <span>faculty1 / fac123</span>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
 
 
 # ===========================================================================
 # PAGE: Register Student  (staff only)
 # ===========================================================================
 def page_register():
-    st.title("🎓 Student Registration")
-    st.markdown("Register a new student with **3 face photos** for multi-angle biometric enrollment.")
+    _page_header(
+        "Student Registration",
+        "Register a new student with 3 face photos for multi-angle biometric enrollment.",
+    )
     col_info, col_cam = st.columns([1, 1], gap="large")
     with col_info:
-        st.subheader("📋 Student Details")
-        name = st.text_input("Full Name *", placeholder="e.g. Jane Doe").strip()
-        roll_no = st.text_input("Roll Number *", placeholder="e.g. 2024CS101").strip().upper()
-        department = st.selectbox("Department *", DEPARTMENTS, index=0, key="reg_dept")
-        col_y, col_s = st.columns(2)
-        with col_y:
-            year = st.selectbox("Year of Study *", YEARS, index=0, key="reg_year")
-        with col_s:
-            _reg_sections = DEPARTMENT_SECTIONS.get(department, DEFAULT_SECTIONS)
-            section = st.selectbox("Section *", _reg_sections, index=0, key=f"reg_sec_{department}")
-        st.info(
-            "💡 **Enrollment Tips:**\n"
-            "- Photo 1: Look straight, neutral expression.\n"
-            "- Photo 2: Slight head turn.\n"
-            "- Photo 3: Normal classroom lighting / smile."
-        )
+        with st.container(border=True):
+            st.markdown("**📋 Student Details**")
+            name = st.text_input("Full Name *", placeholder="e.g. Jane Doe").strip()
+            roll_no = st.text_input("Roll Number *", placeholder="e.g. 2024CS101").strip().upper()
+            department = st.selectbox("Department *", DEPARTMENTS, index=0, key="reg_dept")
+            col_y, col_s = st.columns(2)
+            with col_y:
+                year = st.selectbox("Year of Study *", YEARS, index=0, key="reg_year")
+            with col_s:
+                _reg_sections = DEPARTMENT_SECTIONS.get(department, DEFAULT_SECTIONS)
+                section = st.selectbox("Section *", _reg_sections, index=0, key=f"reg_sec_{department}")
+            st.info(
+                "💡 **Enrollment Tips:**\n"
+                "- Photo 1: Look straight, neutral expression.\n"
+                "- Photo 2: Slight head turn.\n"
+                "- Photo 3: Normal classroom lighting / smile."
+            )
 
     with col_cam:
-        st.subheader("📸 3-Photo Face Capture")
-        has_p1 = st.session_state.get("reg_cam_1") is not None
-        has_p2 = st.session_state.get("reg_cam_2") is not None
-        has_p3 = st.session_state.get("reg_cam_3") is not None
-        captured_count = sum([has_p1, has_p2, has_p3])
-        st.progress(captured_count / 3.0, text=f"Captured {captured_count} of 3 required photos")
-        tab1, tab2, tab3 = st.tabs([
-            f"Photo 1 {'✅' if has_p1 else '📸'}",
-            f"Photo 2 {'✅' if has_p2 else '📸'}",
-            f"Photo 3 {'✅' if has_p3 else '📸'}",
-        ])
-        with tab1:
-            photo1 = st.camera_input("Capture Photo 1 (Front)", key="reg_cam_1")
-        with tab2:
-            photo2 = st.camera_input("Capture Photo 2 (Slight Angle)", key="reg_cam_2")
-        with tab3:
-            photo3 = st.camera_input("Capture Photo 3 (Expression / Lighting)", key="reg_cam_3")
+        with st.container(border=True):
+            st.markdown("**📸 3-Photo Face Capture**")
+            has_p1 = st.session_state.get("reg_cam_1") is not None
+            has_p2 = st.session_state.get("reg_cam_2") is not None
+            has_p3 = st.session_state.get("reg_cam_3") is not None
+            captured_count = sum([has_p1, has_p2, has_p3])
+            st.progress(captured_count / 3.0, text=f"Captured {captured_count} of 3 required photos")
+            tab1, tab2, tab3 = st.tabs([
+                f"Photo 1 {'✅' if has_p1 else '📸'}",
+                f"Photo 2 {'✅' if has_p2 else '📸'}",
+                f"Photo 3 {'✅' if has_p3 else '📸'}",
+            ])
+            with tab1:
+                photo1 = st.camera_input("Capture Photo 1 (Front)", key="reg_cam_1")
+            with tab2:
+                photo2 = st.camera_input("Capture Photo 2 (Slight Angle)", key="reg_cam_2")
+            with tab3:
+                photo3 = st.camera_input("Capture Photo 3 (Expression / Lighting)", key="reg_cam_3")
     st.markdown("---")
     register_clicked = st.button("✅ Register Student (3 Photos)", type="primary", use_container_width=True)
     if register_clicked:
@@ -275,18 +682,21 @@ def page_register():
 # PAGE: Take Attendance  (staff only)
 # ===========================================================================
 def page_take_attendance():
-    st.title("📝 Live Face Attendance")
-    st.markdown("Select the class, snap a live photo — attendance is saved as **Pending** for faculty review.")
+    _page_header(
+        "Live Face Attendance",
+        "Select the class and snap a live photo — attendance is saved as Pending for faculty review.",
+    )
     username = st.session_state["username"]
-    st.subheader("🏫 Class Selection")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        dept_filter = st.selectbox("Department", DEPARTMENTS, key="att_dept")
-    with c2:
-        year_filter = st.selectbox("Year", YEARS, key="att_year")
-    with c3:
-        _att_sections = DEPARTMENT_SECTIONS.get(dept_filter, DEFAULT_SECTIONS)
-        sec_filter = st.selectbox("Section", _att_sections, key=f"att_sec_{dept_filter}")
+    with st.container(border=True):
+        st.markdown("**🏫 Class Selection**")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            dept_filter = st.selectbox("Department", DEPARTMENTS, key="att_dept")
+        with c2:
+            year_filter = st.selectbox("Year", YEARS, key="att_year")
+        with c3:
+            _att_sections = DEPARTMENT_SECTIONS.get(dept_filter, DEFAULT_SECTIONS)
+            sec_filter = st.selectbox("Section", _att_sections, key=f"att_sec_{dept_filter}")
     conn = db.get_db_connection()
     enrolled_students = conn.execute(
         "SELECT id, name, roll_no, face_embedding FROM students "
@@ -307,14 +717,16 @@ def page_take_attendance():
     st.markdown("---")
     col_cam, col_result = st.columns([1, 1], gap="large")
     with col_cam:
-        st.subheader("📸 Live Student Face")
-        att_photo = st.camera_input("Capture student face", key="att_camera")
-        mark_clicked = st.button("📝 Mark Attendance", type="primary", use_container_width=True)
+        with st.container(border=True):
+            st.markdown("**📸 Live Student Face**")
+            att_photo = st.camera_input("Capture student face", key="att_camera")
+            mark_clicked = st.button("📝 Mark Attendance", type="primary", use_container_width=True)
     with col_result:
-        st.subheader("📊 Recognition Result")
-        r_ph = st.empty()
-        m_ph = st.empty()
-        d_ph = st.empty()
+        with st.container(border=True):
+            st.markdown("**📊 Recognition Result**")
+            r_ph = st.empty()
+            m_ph = st.empty()
+            d_ph = st.empty()
         if mark_clicked:
             if not dept_filter or not sec_filter:
                 r_ph.error("Please select a valid Department and Section.")
@@ -439,20 +851,23 @@ def page_take_attendance():
 # PAGE: Review & Post  (faculty only)
 # ===========================================================================
 def page_review_post():
-    st.title("📋 Review & Post Attendance")
-    st.markdown("Review pending records, add/remove entries, then post to finalise.")
+    _page_header(
+        "Review & Post Attendance",
+        "Review pending records, add or remove entries, then post to finalise.",
+    )
     # ---- Filters ----
-    st.subheader("🔍 Select Class & Date")
-    fc1, fc2, fc3, fc4 = st.columns(4)
-    with fc1:
-        rp_dept = st.selectbox("Department", DEPARTMENTS, key="rp_dept")
-    with fc2:
-        rp_year = st.selectbox("Year", YEARS, key="rp_year")
-    with fc3:
-        _rp_sections = DEPARTMENT_SECTIONS.get(rp_dept, DEFAULT_SECTIONS)
-        rp_sec = st.selectbox("Section", _rp_sections, key=f"rp_sec_{rp_dept}")
-    with fc4:
-        rp_date = st.date_input("Date", value=date.today(), key="rp_date")
+    with st.container(border=True):
+        st.markdown("**🔍 Select Class & Date**")
+        fc1, fc2, fc3, fc4 = st.columns(4)
+        with fc1:
+            rp_dept = st.selectbox("Department", DEPARTMENTS, key="rp_dept")
+        with fc2:
+            rp_year = st.selectbox("Year", YEARS, key="rp_year")
+        with fc3:
+            _rp_sections = DEPARTMENT_SECTIONS.get(rp_dept, DEFAULT_SECTIONS)
+            rp_sec = st.selectbox("Section", _rp_sections, key=f"rp_sec_{rp_dept}")
+        with fc4:
+            rp_date = st.date_input("Date", value=date.today(), key="rp_date")
     rp_date_str = rp_date.strftime("%Y-%m-%d")
     st.markdown("---")
     conn = db.get_db_connection()
@@ -639,31 +1054,35 @@ def page_review_post():
 # PAGE: Attendance History  (both roles)
 # ===========================================================================
 def page_history(role: str):
-    st.title("📊 Attendance History")
+    _page_header(
+        "Attendance History",
+        "Showing posted records." if role != "faculty" else "Full attendance log — posted and pending records.",
+    )
     is_faculty = role == "faculty"
     # ---- Filters ----
-    st.subheader("🔍 Filters")
-    hc1, hc2, hc3 = st.columns(3)
-    with hc1:
-        h_dept = st.selectbox("Department", ["All"] + DEPARTMENTS, key="hist_dept")
-    with hc2:
-        h_year = st.selectbox("Year", ["All"] + YEARS, key="hist_year")
-    with hc3:
-        _hist_sections = (
-            DEFAULT_SECTIONS if h_dept == "All"
-            else DEPARTMENT_SECTIONS.get(h_dept, DEFAULT_SECTIONS)
-        )
-        h_sec = st.selectbox("Section", ["All"] + _hist_sections, key=f"hist_sec_{h_dept}")
-    hd1, hd2 = st.columns(2)
-    with hd1:
-        h_from = st.date_input("From Date", value=date.today(), key="hist_from")
-    with hd2:
-        h_to = st.date_input("To Date", value=date.today(), key="hist_to")
-    show_pending = False
-    if is_faculty:
-        show_pending = st.checkbox("Also show Pending records", value=False, key="hist_pending")
-    else:
-        st.caption("Showing **Posted** records. Pending records visible to Faculty only.")
+    with st.container(border=True):
+        st.markdown("**🔍 Filters**")
+        hc1, hc2, hc3 = st.columns(3)
+        with hc1:
+            h_dept = st.selectbox("Department", ["All"] + DEPARTMENTS, key="hist_dept")
+        with hc2:
+            h_year = st.selectbox("Year", ["All"] + YEARS, key="hist_year")
+        with hc3:
+            _hist_sections = (
+                DEFAULT_SECTIONS if h_dept == "All"
+                else DEPARTMENT_SECTIONS.get(h_dept, DEFAULT_SECTIONS)
+            )
+            h_sec = st.selectbox("Section", ["All"] + _hist_sections, key=f"hist_sec_{h_dept}")
+        hd1, hd2 = st.columns(2)
+        with hd1:
+            h_from = st.date_input("From Date", value=date.today(), key="hist_from")
+        with hd2:
+            h_to = st.date_input("To Date", value=date.today(), key="hist_to")
+        show_pending = False
+        if is_faculty:
+            show_pending = st.checkbox("Also show Pending records", value=False, key="hist_pending")
+        else:
+            st.caption("Showing **Posted** records. Pending records visible to Faculty only.")
     # Build query
     where_parts = ["a.date >= ?", "a.date <= ?"]
     params = [h_from.strftime("%Y-%m-%d"), h_to.strftime("%Y-%m-%d")]
@@ -740,27 +1159,111 @@ if not st.session_state["logged_in"]:
 else:
     role = st.session_state["role"]
     username = st.session_state["username"]
-    # ---- Sidebar ----
+
+    # ── Build nav items per role ────────────────────────────────────
+    if role == "staff":
+        nav_items = [
+            ("📋", "Register Student"),
+            ("📸", "Take Attendance"),
+            ("📊", "Attendance History"),
+        ]
+    else:
+        nav_items = [
+            ("✅", "Review & Post"),
+            ("📊", "Attendance History"),
+        ]
+
+    page_names = [item[1] for item in nav_items]
+    # Ensure current page is valid for this role
+    if st.session_state.get("page") not in page_names:
+        st.session_state["page"] = page_names[0]
+
+    # ── Sidebar ─────────────────────────────────────────────────────
     with st.sidebar:
-        st.title("🎓 Attendance System")
-        st.caption(f"Logged in as **{username}** ({role.title()})")
-        st.markdown("---")
-        if role == "staff":
-            page = st.radio(
-                "Navigation",
-                ["Register Student", "Take Attendance", "Attendance History"],
-            )
-        else:  # faculty
-            page = st.radio(
-                "Navigation",
-                ["Review & Post", "Attendance History"],
-            )
-        st.markdown("---")
-        if st.button("🚪 Logout", use_container_width=True):
-            for key in ["logged_in", "username", "role"]:
-                st.session_state[key] = "" if key != "logged_in" else False
+        # Branding
+        st.markdown("""
+        <div style="padding-bottom:1.25rem; border-bottom:1px solid #F3F4F6;
+                    margin-bottom:1.25rem;">
+            <div style="font-size:17px; font-weight:600; color:#0A0A0A;
+                        letter-spacing:-0.015em;">
+                🎓 CampusAttend
+            </div>
+            <div style="font-size:11px; color:#9CA3AF; margin-top:3px;
+                        font-weight:400;">
+                Smart Attendance System
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # User info pill
+        avatar = username[0].upper() if username else "U"
+        role_label = "Faculty" if role == "faculty" else "Staff"
+        badge_bg = "#EFF6FF" if role == "faculty" else "#F0FDF4"
+        badge_color = "#1D4ED8" if role == "faculty" else "#15803D"
+        st.markdown(f"""
+        <div style="background:#F9FAFB; border:1px solid #E5E5E5; border-radius:10px;
+                    padding:10px 12px; margin-bottom:1.5rem;
+                    display:flex; align-items:center; gap:10px;">
+            <div style="width:32px; height:32px; background:#2563EB; border-radius:50%;
+                        display:flex; align-items:center; justify-content:center;
+                        color:white; font-size:13px; font-weight:600; flex-shrink:0;">
+                {avatar}
+            </div>
+            <div>
+                <div style="font-size:13px; font-weight:500; color:#111827;">
+                    {username}
+                </div>
+                <div style="display:inline-block; margin-top:3px; padding:1px 8px;
+                            background:{badge_bg}; color:{badge_color};
+                            border-radius:999px; font-size:10px; font-weight:600;">
+                    {role_label}
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Navigation label
+        st.markdown("""
+        <div style="font-size:10px; font-weight:600; color:#9CA3AF;
+                    text-transform:uppercase; letter-spacing:0.08em;
+                    padding:0 0.25rem; margin-bottom:6px;">
+            Menu
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Nav items — active as styled div, inactive as button
+        for icon, label in nav_items:
+            if st.session_state["page"] == label:
+                st.markdown(f"""
+                <div style="background:#EFF6FF; border-radius:8px;
+                            padding:0.5rem 0.75rem; margin-bottom:3px;
+                            display:flex; align-items:center; gap:8px;
+                            font-size:14px; font-weight:500; color:#2563EB;">
+                    <span>{icon}</span><span>{label}</span>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                if st.button(
+                    f"{icon}  {label}",
+                    key=f"nav_{label}",
+                    use_container_width=True,
+                ):
+                    st.session_state["page"] = label
+                    st.rerun()
+
+        # Logout
+        st.markdown("""
+        <div style="margin-top:1.5rem; padding-top:1rem;
+                    border-top:1px solid #F3F4F6;">
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("🚪  Sign Out", use_container_width=True, key="logout_btn"):
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
             st.rerun()
-    # ---- Page dispatch ----
+
+    # ── Page dispatch ────────────────────────────────────────────────
+    page = st.session_state["page"]
     if page == "Register Student":
         page_register()
     elif page == "Take Attendance":

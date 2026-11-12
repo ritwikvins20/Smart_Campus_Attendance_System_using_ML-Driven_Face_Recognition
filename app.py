@@ -4,6 +4,7 @@ Role routing:
   staff   → Register Student | Take Attendance | Attendance History (read-only)
   faculty → Review & Post    | Attendance History (full)
 """
+import base64
 import io
 import os
 import json
@@ -101,6 +102,7 @@ def _inject_css():
 html, body, [class*="css"], .stApp, [data-testid="stAppViewContainer"] {
     font-family: 'Inter', ui-sans-serif, system-ui, -apple-system,
                  BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    color: #0A0A0A !important;
 }
 
 /* ── Page Background ──────────────────────────────────────────────── */
@@ -216,6 +218,34 @@ html, body, [class*="css"], .stApp, [data-testid="stAppViewContainer"] {
     border-radius: 10px !important;
     font-size: 14px !important;
 }
+[data-testid="stSelectbox"] [data-baseweb="select"],
+[data-testid="stSelectbox"] [data-baseweb="select"] * {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+}
+[data-testid="stSelectbox"] [data-baseweb="select"] svg {
+    fill: #475569 !important;
+    color: #475569 !important;
+}
+[data-baseweb="popover"],
+[data-baseweb="menu"],
+ul[role="listbox"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1) !important;
+}
+ul[role="listbox"] li,
+[data-baseweb="menu"] li,
+[data-baseweb="menu"] div,
+ul[role="listbox"] * {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+}
+ul[role="listbox"] li:hover,
+[data-baseweb="menu"] li:hover {
+    background-color: #F1F5F9 !important;
+}
 
 /* ── Date Input ───────────────────────────────────────────────────── */
 [data-testid="stDateInput"] input {
@@ -223,6 +253,12 @@ html, body, [class*="css"], .stApp, [data-testid="stAppViewContainer"] {
     border: 1px solid #E5E5E5 !important;
     border-radius: 10px !important;
     font-size: 14px !important;
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+}
+[data-testid="stDateInput"] svg {
+    fill: #475569 !important;
+    color: #475569 !important;
 }
 
 /* ── Slider ───────────────────────────────────────────────────────── */
@@ -488,6 +524,17 @@ if "role" not in st.session_state:
     st.session_state["role"] = ""
 if "page" not in st.session_state:
     st.session_state["page"] = ""
+def _get_logo_b64() -> str | None:
+    logo_path = os.path.join(os.path.dirname(__file__), "assets", "vignan_logo.jpg")
+    if os.path.exists(logo_path):
+        try:
+            with open(logo_path, "rb") as f:
+                return base64.b64encode(f.read()).decode("utf-8")
+        except Exception:
+            return None
+    return None
+
+
 # ===========================================================================
 # LOGIN PAGE
 # ===========================================================================
@@ -496,14 +543,23 @@ def show_login():
     _, col, _ = st.columns([1, 1.1, 1])
     with col:
         # ── Logo / branding ──────────────────────────────────────────
-        st.markdown("""
-        <div style="text-align:center; padding:1.5rem 0 1.75rem 0;">
-            <div style="font-size:48px; line-height:1; margin-bottom:0.75rem;">🎓</div>
-            <div style="font-size:26px; font-weight:600; color:#0A0A0A;
+        logo_b64 = _get_logo_b64()
+        logo_html = (
+            f'<div style="margin-bottom:1rem;">'
+            f'<img src="data:image/jpeg;base64,{logo_b64}" '
+            f'style="max-width:320px; width:100%; height:auto; display:inline-block;" '
+            f'alt="Vignan University" />'
+            f'</div>'
+            if logo_b64 else '<div style="font-size:48px; line-height:1; margin-bottom:0.75rem;">🎓</div>'
+        )
+        st.markdown(f"""
+        <div style="text-align:center; padding:1.25rem 0 1.5rem 0;">
+            {logo_html}
+            <div style="font-size:24px; font-weight:700; color:#0A0A0A;
                         letter-spacing:-0.03em; line-height:1.2;">
                 CampusAttend
             </div>
-            <div style="font-size:14px; color:#6B7280; margin-top:6px;">
+            <div style="font-size:13px; color:#6B7280; margin-top:4px;">
                 Smart Campus Attendance System
             </div>
         </div>
@@ -1181,9 +1237,18 @@ else:
     # ── Sidebar ─────────────────────────────────────────────────────
     with st.sidebar:
         # Branding
-        st.markdown("""
+        _sb_logo_b64 = _get_logo_b64()
+        _sb_logo_html = (
+            f'<div style="margin-bottom:0.75rem;">'
+            f'<img src="data:image/jpeg;base64,{_sb_logo_b64}" '
+            f'style="max-width:180px; width:100%; height:auto;" alt="Vignan Logo" />'
+            f'</div>'
+            if _sb_logo_b64 else ""
+        )
+        st.markdown(f"""
         <div style="padding-bottom:1.25rem; border-bottom:1px solid #F3F4F6;
                     margin-bottom:1.25rem;">
+            {_sb_logo_html}
             <div style="font-size:17px; font-weight:600; color:#0A0A0A;
                         letter-spacing:-0.015em;">
                 🎓 CampusAttend

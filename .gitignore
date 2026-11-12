@@ -18,8 +18,9 @@ env/
 # Face photos (biometric data - never commit)
 faces/
 
-# Streamlit cache
-.streamlit/
+# Streamlit cache and secrets (keep config.toml)
+.streamlit/*
+!.streamlit/config.toml
 
 # DeepFace model cache
 .deepface/
